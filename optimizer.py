@@ -73,7 +73,7 @@ class OptimizerGA:
 				for i in range(generations_number):
 					self.chromosomes = self.next_generation(mutation, optimizer)
 					f.write('_' * 70)
-					f.write('\nINFO about generation {}:\n'.format(i))
+					f.write('\nINFO about generation {}:\n'.format(i + 1))
 					for chromosome in self.chromosomes:
 						f.write('chromosome {} gives value: {}\n'.format(chromosome, self.function(*chromosome)))
 					f.write('min value for this generation: {}\n'.format(self.calculate(optimizer)))
@@ -81,7 +81,7 @@ class OptimizerGA:
 				f.write('_' * 70)
 				for i in range(generations_number):
 					self.chromosomes = self.next_generation(mutation, optimizer)
-					f.write('\nINFO about generation {}:\n'.format(i))
+					f.write('\nINFO about generation {}:\n'.format(i + 1))
 					for chromosome in self.chromosomes:
 						f.write('chromosome {} gives value: {}\n'.format(chromosome, self.function(*chromosome)))
 					f.write('max value for this generation: {}\n'.format(self.calculate(optimizer)))
