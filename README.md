@@ -1,7 +1,7 @@
 # MaxMinFuncByGeneticAlgorithm
 
 
-** python3 main.py to run this programme and open GUI **
+* python3 main.py to run this programme and open GUI *
 
 
 This programme approximately calculates a minimum or a maximum of function with two parameters based on genetic algorithm.
