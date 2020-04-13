@@ -13,7 +13,7 @@ def main():
 		gaParams = get_settings()
 		function = Func(gaParams.f)
 		optimizer = OptimizerGA(function)
-		optimizer.startGA_with_statistics(	chromosoms_number=gaParams.chromosoms_number, 
+		optimizer.startGA_with_statistics(	chromosomes_number=gaParams.chromosomes_number, 
 											generations_number=gaParams.generations_number, 
 											mutation=gaParams.mutation, optimizer=gaParams.optimizer)
 		info_GUI()
