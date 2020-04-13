@@ -132,7 +132,7 @@ class OptimizerGA:
 	
 	def startGA(self, chromosomes_number=4, generations_number=10, 
 				mutation=False, optimizer='min', 
-				statistics=True, save=False):
+				statistics=True, save=False, plot=True):
 		self.chromosomes = np.array([(chromosomes_number * rd.rand(2) - (chromosomes_number / 2)) for i in range(chromosomes_number)])
 
 		f = open('GA-statistics.txt', 'w')
@@ -150,8 +150,9 @@ class OptimizerGA:
 			f.write('{} value for this generation: {}\n'.format(optimizer, self.calculate(optimizer)))
 
 		f.close()
-
-		self.plotGA(chromosomes_number, generations_number, optimizer, save)
+		
+		if plot:
+			self.plotGA(chromosomes_number, generations_number, optimizer, save)
 
 		if not(save):
 			for i in range(generations_number):

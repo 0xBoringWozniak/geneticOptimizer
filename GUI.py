@@ -1,7 +1,7 @@
-from tkinter import *
 import tkinter.scrolledtext as tkst
 import tkinter as tk
 
+from tkinter import *
 from accessify import protected
 
 from settingsGA import gaParams
@@ -25,17 +25,20 @@ class gaGUI():
 		self.mutation = BooleanVar()
 		self.statistics = BooleanVar()
 		self.save = BooleanVar()
+		self.plot = BooleanVar()
 
 		self.chromosomes_number.set(4)
 		self.generations_number.set(10)
 		self.optimizer.set('min')
 		self.mutation.set(1)
 		self.statistics.set(1)
+		self.plot.set(1)
 		self.save.set(0)
 
 		self.chk1 = Checkbutton(text="Mutation", variable=self.mutation, onvalue=1, offvalue=0)
 		self.chk2 = Checkbutton(text="Show statistics", variable=self.statistics, onvalue=1, offvalue=0)
 		self.chk3 = Checkbutton(text="Save all files", variable=self.save, onvalue=1, offvalue=0)
+		self.chk4 = Checkbutton(text="Show plot", variable=self.plot, onvalue=1, offvalue=0)
 		 
 		self.f_label = Label(text="Input f(x, y) in python format:", font='arial 13')
 		self.chromosomes_number_label = Label(text="Input chromosomes number (multiple of 4):", font='arial 13')
@@ -59,6 +62,7 @@ class gaGUI():
 		self.chk1.grid(row=5, column=0, padx=1, pady=1)
 		self.chk2.grid(row=5, column=1, padx=1, pady=1)
 		self.chk3.grid(row=6, column=0, padx=1, pady=1)
+		self.chk4.grid(row=6, column=1, padx=1, pady=1)
 
 
 		self.submit_button = Button(text=" calculate ", command=self.gaInfo, font='arial 17', 
@@ -76,7 +80,7 @@ class gaGUI():
 			optimizer.startGA(	chromosomes_number=int(self.chromosomes_number_entry.get()), 
 								generations_number=int(self.generations_number_entry.get()), 
 								mutation=self.mutation.get(), optimizer=self.optimizer_entry.get(),
-								statistics=self.statistics.get(), save=self.save.get())
+								statistics=self.statistics.get(), save=self.save.get(), plot=self.plot.get())
 
 			if self.statistics.get():
 				with open('GA-statistics.txt', 'r') as f:
