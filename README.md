@@ -1,6 +1,7 @@
 # MaxMinFuncByGeneticAlgorithm
 
 **after install package geneticOptimizer in env**
+
 **env/bin/python3 -m to run this programme and open GUI**
 
 
