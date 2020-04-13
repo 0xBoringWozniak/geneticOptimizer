@@ -40,7 +40,7 @@ def get_settings() -> gaParams:
 	chromosomes_number.set(4)
 	generations_number.set(10)
 	optimizer.set('min')
-	mutation.set(0)
+	mutation.set(1)
 
 	chk = Checkbutton(text="Mutation", variable=mutation, onvalue=1, offvalue=0)
 	 
