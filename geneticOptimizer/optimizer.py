@@ -15,7 +15,7 @@ from collections 			import OrderedDict
 
 import sys, os
 
-from function import Func
+from func import Func
 
 
 class OptimizerGA:
@@ -128,14 +128,14 @@ class OptimizerGA:
 
 		plt.show()
 		if save:
-			anim.save('GA-animation.gif', writer='imagemagick', fps=60)
+			anim.save('results/GA-animation.gif', writer='imagemagick', fps=60)
 	
 	def startGA(self, chromosomes_number=4, generations_number=10, 
 				mutation=False, optimizer='min', 
 				statistics=True, save=False, plot=True):
 		self.chromosomes = np.array([(chromosomes_number * rd.rand(2) - (chromosomes_number / 2)) for i in range(chromosomes_number)])
 
-		f = open('GA-statistics.txt', 'w')
+		f = open('results/GA-statistics.txt', 'w')
 		for i in range(generations_number):
 			self.chromosomes = self.next_generation(mutation, optimizer)
 			df = pd.DataFrame(self.chromosomes, columns=['x', 'y'])
@@ -157,3 +157,4 @@ class OptimizerGA:
 		if not(save):
 			for i in range(generations_number):
 				os.remove("generations/generation_{}.csv".format(i + 1))
+

@@ -15,7 +15,7 @@ where (x_best, y_best), (x_better, y_better), (x_good, y_good) are selected indi
 
 A mutation can be chosen randomly in any gens (it can be configured in method startGA_with_statistics).
 A zero-generation fill with random float numbers in [-chromosomes_number / 2, chromosomes_number).
-Results are shown in the screen and also are saved in 'GA-statistics.txt'.
+Results are shown in the screen and also are saved in 'results/GA-statistics.txt'.
 
 
 

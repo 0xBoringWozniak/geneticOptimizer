@@ -6,7 +6,7 @@ from accessify import protected
 
 from settingsGA import gaParams
 from optimizer import OptimizerGA
-from function import Func
+from func import Func
 
 
 class gaGUI():
@@ -83,7 +83,7 @@ class gaGUI():
 								statistics=self.statistics.get(), save=self.save.get(), plot=self.plot.get())
 
 			if self.statistics.get():
-				with open('GA-statistics.txt', 'r') as f:
+				with open('results/GA-statistics.txt', 'r') as f:
 					mytext = f.read()
 					root = Tk()
 
