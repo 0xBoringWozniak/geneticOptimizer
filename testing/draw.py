@@ -1,17 +1,3 @@
-from tkinter import *
-import tkinter.scrolledtext as tkst
-import tkinter as tk
-
-import sys, os
-sys.path.append(os.path.abspath('../'))
-
-from function import Func
-from optimizer import OptimizerGA
-
-from settingsGA import gaParams
-
-
-
 def info_GUI():
 	with open('GA-statistics.txt', 'r') as f:
 		mytext = f.read()

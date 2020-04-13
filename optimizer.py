@@ -1,21 +1,25 @@
-import numpy as np
-import numpy.random as rd
-import pandas as pd
-import matplotlib.pyplot as plt
+import numpy 				as np
+import numpy.random 		as rd
+import pandas 				as pd
+import matplotlib.pyplot 	as plt
 import matplotlib.animation as animation
+import tkinter.scrolledtext as tkst
+import tkinter 				as tk
 
-from accessify import protected
-from matplotlib import cm
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
-from collections import OrderedDict
+from tkinter 				import *
+from accessify 				import protected
+from matplotlib 			import cm
+from mpl_toolkits.mplot3d 	import Axes3D
+from matplotlib.ticker 		import LinearLocator, FormatStrFormatter
+from collections 			import OrderedDict
 
-import function
+import sys, os
+
+from function import Func
 
 
 class OptimizerGA:
 	def __init__(self, function):
-		self.chromosomes = np.array([])
 		self.function = function
 
 	@protected
@@ -45,6 +49,7 @@ class OptimizerGA:
 								[best_chromosome[0], good_chromosome[1]   + float(mutation * rd.rand(1))]])
 		return new_part
 
+	@protected
 	def next_generation(self, mutation=False, optimizer='min'):
 		part = np.array([self.chromosomes[j] for j in range(0 , 4)])
 		new_population = self.generate_new_part(part, mutation, optimizer)
@@ -66,17 +71,8 @@ class OptimizerGA:
 			raise ValueError(optimizer + 'should be max or min')
 
 	@protected
-	def startGA(self, chromosomes_number=4, generations_number=10, mutation=False, optimizer='min'):
-		self.chromosomes = np.array([(chromosomes_number * rd.rand(2) - (chromosomes_number / 2)) for i in range(chromosomes_number)])
-		for i in range(generations_number):
-			self.chromosomes = self.next_generation(mutation, optimizer)
-			df = pd.DataFrame(self.chromosomes, columns=['x', 'y'])
-			df['f(x, y)'] = self.function(df['x'], df['y'])
-			df.to_csv("chromosomes/chromosomes_{}.csv".format(i + 1))
-
-	@protected
-	def plotGA(self, chromosomes_number, generations_number, optimizer):
-		data = pd.concat([pd.read_csv('chromosomes/chromosomes_{}.csv'.format(i + 1), index_col=0) 
+	def plotGA(self, chromosomes_number, generations_number, optimizer, save=False):
+		data = pd.concat([pd.read_csv('generations/generation_{}.csv'.format(i + 1), index_col=0) 
 								for i in range(generations_number)], ignore_index=True)
 
 		data['time'] = [i for i in range(chromosomes_number * generations_number)]
@@ -85,10 +81,11 @@ class OptimizerGA:
 			df = data[abs(num - data['time']) <= chromosomes_number]
 			graph.set_data (np.array(df['x']), np.array(df['y']))
 			graph.set_3d_properties(np.array(df['f(x, y)']))
-			title.set_text('GA-optimizer plot, time={}'.format(num))
+			title.set_text('GA-optimizer time={}'.format(num))
 			return title, graph, 
 
-		fig = plt.figure()
+		fig = plt.figure(figsize = (15, 8), num='GA animation')
+
 		ax = fig.add_subplot(111, projection='3d')
 
 
@@ -130,30 +127,32 @@ class OptimizerGA:
 		fig.colorbar(surf, shrink=0.8, aspect=3)
 
 		plt.show()
-		# anim.save('GA-animation.gif', writer='imagemagick', fps=60)
+		if save:
+			anim.save('GA-animation.gif', writer='imagemagick', fps=60)
+	
+	def startGA(self, chromosomes_number=4, generations_number=10, 
+				mutation=False, optimizer='min', 
+				statistics=True, save=False):
+		self.chromosomes = np.array([(chromosomes_number * rd.rand(2) - (chromosomes_number / 2)) for i in range(chromosomes_number)])
 
+		f = open('GA-statistics.txt', 'w')
+		for i in range(generations_number):
+			self.chromosomes = self.next_generation(mutation, optimizer)
+			df = pd.DataFrame(self.chromosomes, columns=['x', 'y'])
+			df['f(x, y)'] = self.function(df['x'], df['y'])
+			df.to_csv("generations/generation_{}.csv".format(i + 1))
+			
+			
+			f.write('_' * 70)
+			f.write('\nINFO about generation {}:\n'.format(i + 1))
+			for chromosome in self.chromosomes:
+				f.write('chromosome {} gives value: {}\n'.format(chromosome, self.function(*chromosome)))
+			f.write('{} value for this generation: {}\n'.format(optimizer, self.calculate(optimizer)))
 
-	def startGA_with_statistics(self, chromosomes_number=4, generations_number=10, mutation=False, optimizer='min'):
-		self.startGA(chromosomes_number, generations_number, mutation, optimizer)
-		with open('GA-statistics.txt', 'w') as f:
-			if optimizer == 'min':
-				for i in range(generations_number):
-					self.chromosomes = self.next_generation(mutation, optimizer)
-					f.write('_' * 70)
-					f.write('\nINFO about generation {}:\n'.format(i + 1))
-					for chromosome in self.chromosomes:
-						f.write('chromosome {} gives value: {}\n'.format(chromosome, self.function(*chromosome)))
-					f.write('min value for this generation: {}\n'.format(self.calculate(optimizer)))
-			elif optimizer == 'max':
-				for i in range(generations_number):
-					self.chromosomes = self.next_generation(mutation, optimizer)
-					f.write('_' * 70)
-					f.write('\nINFO about generation {}:\n'.format(i + 1))
-					for chromosome in self.chromosomes:
-						f.write('chromosome {} gives value: {}\n'.format(chromosome, self.function(*chromosome)))
-					f.write('max value for this generation: {}\n'.format(self.calculate(optimizer)))
-			else:
-				raise ValueError(optimizer + 'should be max or min')
-		self.plotGA(chromosomes_number, generations_number, optimizer)
+		f.close()
 
+		self.plotGA(chromosomes_number, generations_number, optimizer, save)
 
+		if not(save):
+			for i in range(generations_number):
+				os.remove("generations/generation_{}.csv".format(i + 1))
