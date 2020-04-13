@@ -39,9 +39,12 @@ A mutation can be chosen randomly in any gens (it can be configured in method st
 A zero-generation fill with random float numbers in [-chromosomes_number / 2, chromosomes_number).
 
 
+# It is planned:
 
-
-
+x [] Add mutation options such as a percentage of mutations genes, a step of mutation, a kind of mutation
+x [] Add selection options based on different GA
+x [] Add more metrics for GA and more info in statistics, for instance, a time, a fitness etc.
+x [] Add a custom list of functions which can illustrate how the package works
 
 
 
