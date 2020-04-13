@@ -3,7 +3,7 @@
 
 ### How to install
 
-after installing package geneticOptimizer in env - it can be done, for instance, with the help of github actions, PyCharm 
+install package geneticOptimizer in env - it can be done, for instance, with the help of github actions, PyCharm 
 or manually from github repo.
 
 
