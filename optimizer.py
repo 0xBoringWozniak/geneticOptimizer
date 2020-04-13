@@ -154,7 +154,6 @@ class OptimizerGA:
 					f.write('max value for this generation: {}\n'.format(self.calculate(optimizer)))
 			else:
 				raise ValueError(optimizer + 'should be max or min')
-
 		self.plotGA(chromosomes_number, generations_number, optimizer)
 
 
