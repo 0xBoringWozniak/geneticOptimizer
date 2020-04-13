@@ -15,7 +15,9 @@ or manually from github repo.
 - chromosomes=individs input string
 - generations number input string
 - optimizer function (min or max)
-Furthermore, optional fields
+
+Furthermore, optional fields:
+
 - mutation - add a mutation to each part(4 individuals) of a new generation
 - show statistics - show accurate information about each generation
 - save all files - save in geneticOptimizer/result statistics with animation in .gif and GA-Statistics.csv
