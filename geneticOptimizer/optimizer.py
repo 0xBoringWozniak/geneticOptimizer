@@ -6,6 +6,7 @@ import matplotlib.animation as animation
 import tkinter.scrolledtext as tkst
 import tkinter 				as tk
 
+
 from tkinter 				import *
 from accessify 				import protected
 from matplotlib 			import cm
@@ -68,7 +69,7 @@ class OptimizerGA:
 		elif optimizer == 'max':
 			return max([self.function(*chromosome) for chromosome in self.chromosomes])
 		else:
-			raise ValueError(optimizer + 'should be max or min')
+			raise ValueError(optimizer + ' should be max or min')
 
 	@protected
 	def plotGA(self, chromosomes_number, generations_number, optimizer, save=False):
@@ -79,9 +80,9 @@ class OptimizerGA:
 
 		def update_graph(num):
 			df = data[abs(num - data['time']) <= chromosomes_number]
-			graph.set_data (np.array(df['x']), np.array(df['y']))
+			graph.set_data(np.array(df['x']), np.array(df['y']))
 			graph.set_3d_properties(np.array(df['f(x, y)']))
-			title.set_text('GA-optimizer time={}'.format(num))
+			title.set_text('GA-optimizer generation={}'.format(num + 1))
 			return title, graph, 
 
 		fig = plt.figure(figsize = (15, 8), num='GA animation')
@@ -95,27 +96,30 @@ class OptimizerGA:
 		X, Y = np.meshgrid(X, Y)
 		Z = self.function(X, Y)
 
-		if optimizer == 'min':
-			color = 'blue'
-			color_map = cm.OrRd
-		else:
-			color = 'red'
-			color_map = cm.Blues
+
+		# set colormap if it is needed
+		theCM = cm.get_cmap()
+		theCM._init()
+		alphas = np.abs(np.linspace(-1, 1, int(theCM.N)))
+		theCM._lut[:-3,-1] = alphas
 
 		# Plot the surface.
-		surf = ax.plot_surface(X, Y, Z, cmap=color_map,
-								linewidth=0, antialiased=True)
+		surf = ax.plot_surface(X, Y, Z, cmap=theCM,
+								linewidth=0, antialiased=True, alpha=0.6)
 
 		title = ax.set_title('GA-optimizer plot')
 
+
+
 		df = data[data['time'] == 0]
 		graph, = ax.plot(np.array(df['x']), np.array(df['y']), np.array(df['f(x, y)']), 
-								linestyle="", c=color, marker='o', ms=5)
+								linestyle="", c='black', marker='o', ms=2)
 
-		anim = animation.FuncAnimation(fig, update_graph, chromosomes_number * generations_number - 1, interval=chromosomes_number, save_count=True)
+
+		anim = animation.FuncAnimation(fig, update_graph, generations_number, interval=120, save_count=True)
 
 		# Customize the z axis.
-		ax.set_zlim(-1.31, 1.31)
+		ax.set_zlim(-5, 5)
 		ax.zaxis.set_major_locator(LinearLocator(10))
 		ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
@@ -133,13 +137,15 @@ class OptimizerGA:
 	def startGA(self, chromosomes_number=4, generations_number=10, 
 				mutation=False, optimizer='min', 
 				statistics=True, save=False, plot=True):
-		self.chromosomes = np.array([(chromosomes_number * rd.rand(2) - (chromosomes_number / 2)) for i in range(chromosomes_number)])
+		self.chromosomes = np.array([(2 * rd.rand(2) - 2) for i in range(chromosomes_number)])
 
 		f = open('results/GA-statistics.txt', 'w')
 		for i in range(generations_number):
 			self.chromosomes = self.next_generation(mutation, optimizer)
 			df = pd.DataFrame(self.chromosomes, columns=['x', 'y'])
-			df['f(x, y)'] = self.function(df['x'], df['y'])
+			x = np.array(df['x'])
+			y = np.array(df['y'])
+			df['f(x, y)'] = self.function(x, y)
 			df.to_csv("generations/generation_{}.csv".format(i + 1))
 			
 			

@@ -1,3 +1,13 @@
+from numpy import sin, cos, tan,\
+				arcsin, arccos, arctan, arctan2,\
+				sinh, cosh, tanh,\
+				arcsinh, arccosh, arctanh,\
+				exp, expm1, exp2,\
+				log, log2, log10, log1p
+
+
+
+
 class Func:
 	def __init__(self, to_exec):
 		to_exec = to_exec.strip()
