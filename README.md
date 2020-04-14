@@ -6,6 +6,7 @@
 install package geneticOptimizer in env - it can be done, for instance, with the help of github actions, PyCharm 
 or manually from github repo.
 
+be sure that in geneticOptimizer/ you have folders generations and results
 
 
 ### How to use
