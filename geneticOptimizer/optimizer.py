@@ -33,7 +33,7 @@ class OptimizerGA:
 		elif optimizer == 'max':
 			chromosomesDict = OrderedDict(sorted(chromosomesDict.items(), key=lambda t: -t[1]))
 		else:
-			raise ValueError(str(optimizer) + 'should be max or min')
+			raise ValueError(str(optimizer) + ' should be max or min')
 
 		chromosome_indexes = list()
 
@@ -44,10 +44,10 @@ class OptimizerGA:
 		better_chromosome = chromosomes[int(chromosome_indexes[1])]
 		best_chromosome = chromosomes[int(chromosome_indexes[0])]
 
-		new_part = np.array([	[better_chromosome[0] + float(mutation * rd.rand(1)), best_chromosome[1]],
-								[good_chromosome[0]   + float(mutation * rd.rand(1)), best_chromosome[1]],
-								[best_chromosome[0], better_chromosome[0] + float(mutation * rd.rand(1))],
-								[best_chromosome[0], good_chromosome[1]   + float(mutation * rd.rand(1))]])
+		new_part = np.array([	[better_chromosome[0] + float(2 * mutation * rd.rand(1) - 1), best_chromosome[1]],
+								[good_chromosome[0]   + float(2 * mutation * rd.rand(1) - 1), best_chromosome[1]],
+								[best_chromosome[0], better_chromosome[0] + float(2 * mutation * rd.rand(1) - 1)],
+								[best_chromosome[0], good_chromosome[1]   + float(2 * mutation * rd.rand(1) - 1)]])
 		return new_part
 
 	@protected
@@ -79,7 +79,7 @@ class OptimizerGA:
 		data['time'] = [i for i in range(chromosomes_number * generations_number)]
 
 		def update_graph(num):
-			df = data[abs(num - data['time']) <= chromosomes_number]
+			df = data[abs(num * chromosomes_number - data['time']) <= 2 * chromosomes_number]
 			graph.set_data(np.array(df['x']), np.array(df['y']))
 			graph.set_3d_properties(np.array(df['f(x, y)']))
 			title.set_text('GA-optimizer generation={}'.format(num + 1))
@@ -113,10 +113,10 @@ class OptimizerGA:
 
 		df = data[data['time'] == 0]
 		graph, = ax.plot(np.array(df['x']), np.array(df['y']), np.array(df['f(x, y)']), 
-								linestyle="", c='black', marker='o', ms=2)
+								linestyle="", c='black', marker='2', ms=2)
 
 
-		anim = animation.FuncAnimation(fig, update_graph, generations_number, interval=120, save_count=True)
+		anim = animation.FuncAnimation(fig, update_graph, generations_number, interval=200, save_count=True)
 
 		# Customize the z axis.
 		ax.set_zlim(-5, 5)
