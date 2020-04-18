@@ -41,7 +41,7 @@ class gaGUI():
 		self.chk4 = Checkbutton(text="Show plot", variable=self.plot, onvalue=1, offvalue=0)
 		 
 		self.f_label = Label(text="Input f(x, y) in python format:", font='arial 13')
-		self.chromosomes_number_label = Label(text="Input chromosomes number (multiple of 4):", font='arial 13')
+		self.chromosomes_number_label = Label(text="Input individs number (multiple of 4):", font='arial 13')
 		self.generations_number_label = Label(text="Input generations number:", font='arial 13')
 		self.optimizer_label = Label(text="Input optimizer (min or max):", font='arial 13')
 		 

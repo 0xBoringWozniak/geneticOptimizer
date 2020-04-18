@@ -82,7 +82,7 @@ class OptimizerGA:
 			df = data[abs(num * chromosomes_number - data['time']) <= 2 * chromosomes_number]
 			graph.set_data(np.array(df['x']), np.array(df['y']))
 			graph.set_3d_properties(np.array(df['f(x, y)']))
-			title.set_text('GA-optimizer generation={}'.format(num + 1))
+			title.set_text('generation={}'.format(num + 1))
 			return title, graph, 
 
 		fig = plt.figure(figsize = (15, 8), num='GA animation')
