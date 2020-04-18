@@ -44,10 +44,10 @@ class OptimizerGA:
 		better_chromosome = chromosomes[int(chromosome_indexes[1])]
 		best_chromosome = chromosomes[int(chromosome_indexes[0])]
 
-		new_part = np.array([	[better_chromosome[0] + float(mutation_range * mutation * rd.rand(1) - int(mutation_range / 2)), best_chromosome[1]],
-								[good_chromosome[0]   + float(mutation_range * mutation * rd.rand(1) - int(mutation_range / 2)), best_chromosome[1]],
-								[best_chromosome[0], better_chromosome[0] + float(mutation_range * mutation * rd.rand(1) - int(mutation_range / 2))],
-								[best_chromosome[0], good_chromosome[1]   + float(mutation_range * mutation * rd.rand(1) - int(mutation_range / 2))]])
+		new_part = np.array([	[better_chromosome[0] + float(mutation_range * mutation * rd.rand(1) - (mutation_range / 2)), best_chromosome[1]],
+								[good_chromosome[0]   + float(mutation_range * mutation * rd.rand(1) - (mutation_range / 2)), best_chromosome[1]],
+								[best_chromosome[0], better_chromosome[0] + float(mutation_range * mutation * rd.rand(1) - (mutation_range / 2))],
+								[best_chromosome[0], good_chromosome[1]   + float(mutation_range * mutation * rd.rand(1) - (mutation_range / 2))]])
 		return new_part
 
 	@protected
@@ -91,8 +91,8 @@ class OptimizerGA:
 
 
 		# Make data.
-		X = np.arange(-3, 3, 0.25)
-		Y = np.arange(-3, 3, 0.25)
+		X = np.arange(-4, 4, 0.25)
+		Y = np.arange(-4, 4, 0.25)
 		X, Y = np.meshgrid(X, Y)
 		Z = self.function(X, Y)
 
