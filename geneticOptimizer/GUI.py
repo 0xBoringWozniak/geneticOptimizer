@@ -13,7 +13,7 @@ class gaGUI():
 	def __init__(self):
 		self.root = Tk()
 		self.root.title("Settings")
-		self.root.geometry('500x250+100+100')
+		self.root.geometry('550x300+100+100')
 		self.root.configure(bg='white')
 		# photo = PhotoImage(file = "logo.png")
 		# w = Label(self.root, image=photo)
@@ -23,6 +23,7 @@ class gaGUI():
 		self.generations_number = IntVar()
 		self.optimizer = StringVar()
 		self.mutation = BooleanVar()
+		self.mutation_range = IntVar()
 		self.statistics = BooleanVar()
 		self.save = BooleanVar()
 		self.plot = BooleanVar()
@@ -31,6 +32,7 @@ class gaGUI():
 		self.generations_number.set(10)
 		self.optimizer.set('min')
 		self.mutation.set(1)
+		self.mutation_range.set(2)
 		self.statistics.set(1)
 		self.plot.set(1)
 		self.save.set(0)
@@ -43,26 +45,30 @@ class gaGUI():
 		self.f_label = Label(text="Input f(x, y) in python format:", font='arial 13')
 		self.chromosomes_number_label = Label(text="Input individs number (multiple of 4):", font='arial 13')
 		self.generations_number_label = Label(text="Input generations number:", font='arial 13')
+		self.mutation_range_label = Label(text="Input mutation range:", font='arial 13')
 		self.optimizer_label = Label(text="Input optimizer (min or max):", font='arial 13')
 		 
 		self.f_label.grid(row=0, column=0, sticky="w")
 		self.chromosomes_number_label.grid(row=1, column=0, sticky="w")
 		self.generations_number_label.grid(row=2, column=0, sticky="w")
 		self.optimizer_label.grid(row=3, column=0, sticky="w")
-		 
+		self.mutation_range_label.grid(row=5, column=0, sticky="w")
+
 		self.f_entry = Entry(textvariable=self.f)
 		self.chromosomes_number_entry = Entry(textvariable=self.chromosomes_number)
 		self.generations_number_entry = Entry(textvariable=self.generations_number)
+		self.mutation_range_entry = Entry(textvariable=self.mutation_range)
 		self.optimizer_entry = Entry(textvariable=self.optimizer)
 		 
 		self.f_entry.grid(row=0,column=1, padx=5, pady=5)
 		self.chromosomes_number_entry.grid(row=1,column=1, padx=5, pady=5)
 		self.generations_number_entry.grid(row=2,column=1, padx=5, pady=5)
 		self.optimizer_entry.grid(row=3,column=1, padx=5, pady=5)
-		self.chk1.grid(row=5, column=0, padx=1, pady=1)
-		self.chk2.grid(row=5, column=1, padx=1, pady=1)
-		self.chk3.grid(row=6, column=0, padx=1, pady=1)
-		self.chk4.grid(row=6, column=1, padx=1, pady=1)
+		self.chk1.grid(row=6, column=0, padx=1, pady=1)
+		self.mutation_range_entry.grid(row=5, column=1, padx=5, pady=5)
+		self.chk2.grid(row=6, column=1, padx=1, pady=1)
+		self.chk3.grid(row=7, column=1, padx=1, pady=1)
+		self.chk4.grid(row=7, column=0, padx=1, pady=1)
 
 
 		self.submit_button = Button(text=" calculate ", command=self.gaInfo, font='arial 17', 
@@ -79,7 +85,8 @@ class gaGUI():
 			optimizer = OptimizerGA(function)
 			optimizer.startGA(	chromosomes_number=int(self.chromosomes_number_entry.get()), 
 								generations_number=int(self.generations_number_entry.get()), 
-								mutation=self.mutation.get(), optimizer=self.optimizer_entry.get(),
+								mutation=self.mutation.get(), mutation_range=self.mutation_range.get(),
+								optimizer=self.optimizer_entry.get(),
 								statistics=self.statistics.get(), save=self.save.get(), plot=self.plot.get())
 
 			if self.statistics.get():

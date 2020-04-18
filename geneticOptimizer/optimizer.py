@@ -24,7 +24,7 @@ class OptimizerGA:
 		self.function = function
 
 	@protected
-	def generate_new_part(self, chromosomes, mutation=False, optimizer='min'):
+	def generate_new_part(self, chromosomes, mutation=False, mutation_range=2, optimizer='min'):
 		values = [self.function(*chromosome) for chromosome in chromosomes]
 		chromosomesDict = dict(zip([str(i) for i in range(4)], values))
 
@@ -44,20 +44,20 @@ class OptimizerGA:
 		better_chromosome = chromosomes[int(chromosome_indexes[1])]
 		best_chromosome = chromosomes[int(chromosome_indexes[0])]
 
-		new_part = np.array([	[better_chromosome[0] + float(2 * mutation * rd.rand(1) - 1), best_chromosome[1]],
-								[good_chromosome[0]   + float(2 * mutation * rd.rand(1) - 1), best_chromosome[1]],
-								[best_chromosome[0], better_chromosome[0] + float(2 * mutation * rd.rand(1) - 1)],
-								[best_chromosome[0], good_chromosome[1]   + float(2 * mutation * rd.rand(1) - 1)]])
+		new_part = np.array([	[better_chromosome[0] + float(mutation_range * mutation * rd.rand(1) - (mutation_range / 2)), best_chromosome[1]],
+								[good_chromosome[0]   + float(mutation_range * mutation * rd.rand(1) - (mutation_range / 2)), best_chromosome[1]],
+								[best_chromosome[0], better_chromosome[0] + float(mutation_range * mutation * rd.rand(1) - (mutation_range / 2))],
+								[best_chromosome[0], good_chromosome[1]   + float(mutation_range * mutation * rd.rand(1) - (mutation_range / 2))]])
 		return new_part
 
 	@protected
-	def next_generation(self, mutation=False, optimizer='min'):
+	def next_generation(self, mutation=False, mutation_range=2, optimizer='min'):
 		part = np.array([self.chromosomes[j] for j in range(0 , 4)])
-		new_population = self.generate_new_part(part, mutation, optimizer)
+		new_population = self.generate_new_part(part, mutation, mutation_range, optimizer)
 
 		for parts_number in range(1, int(len(self.chromosomes) / 4)):
 			part = np.array([self.chromosomes[j] for j in range(parts_number * 4, (parts_number + 1) * 4)])
-			new_part = self.generate_new_part(part, mutation, optimizer)
+			new_part = self.generate_new_part(part, mutation, mutation_range, optimizer)
 			new_population = np.append(new_population, new_part, axis=0)
 
 		return new_population
@@ -91,8 +91,8 @@ class OptimizerGA:
 
 
 		# Make data.
-		X = np.arange(-5, 5, 0.25)
-		Y = np.arange(-5, 5, 0.25)
+		X = np.arange(-4, 4, 0.25)
+		Y = np.arange(-4, 4, 0.25)
 		X, Y = np.meshgrid(X, Y)
 		Z = self.function(X, Y)
 
@@ -135,13 +135,13 @@ class OptimizerGA:
 			anim.save('results/GA-animation.gif', writer='imagemagick', fps=60)
 	
 	def startGA(self, chromosomes_number=4, generations_number=10, 
-				mutation=False, optimizer='min', 
+				mutation=False, mutation_range=2, optimizer='min', 
 				statistics=True, save=False, plot=True):
-		self.chromosomes = np.array([(2 * rd.rand(2) - 2) for i in range(chromosomes_number)])
+		self.chromosomes = np.array([(mutation_range * rd.rand(2) - int(mutation_range / 2)) for i in range(chromosomes_number)])
 
 		f = open('results/GA-statistics.txt', 'w')
 		for i in range(generations_number):
-			self.chromosomes = self.next_generation(mutation, optimizer)
+			self.chromosomes = self.next_generation(mutation, float(mutation_range / (i + 1)), optimizer)
 			df = pd.DataFrame(self.chromosomes, columns=['x', 'y'])
 			x = np.array(df['x'])
 			y = np.array(df['y'])
