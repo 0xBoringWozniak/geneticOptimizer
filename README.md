@@ -12,10 +12,11 @@ be sure that in geneticOptimizer/ you have folders generations and results
 ### How to use
 
 **env/bin/python3 -m geneticOptimizer** to run this programme and open settings-GUI with several fields:
-- f(x, y) input string
-- chromosomes=individs input string
-- generations number input string
-- optimizer function (min or max)
+- f(x, y) - define a function
+- individs number - set a individs number
+- generations number - set generations number
+- optimizer function (min or max) - an optimizer choice
+- mutation range - set a mutation range
 
 Furthermore, optional fields:
 
@@ -29,15 +30,14 @@ Furthermore, optional fields:
 
 ### About an algorithm 
 This programme approximately calculates a minimum or a maximum of function with two parameters based on genetic algorithm.
-Each individual is one chromosome (x, y) and because of it an individual and a chromosome have the same meaning, a generation consists of parts where one part is 4 individuals, as consequence, a number of chromosomes is multiple of 4.
+Each individual is one chromosome (x, y), so, individual and a chromosome have the same meaning; a generation consists of parts where one part is 4 individuals, as consequence, a number of individs is multiple of 4.
 
 A genetic algorithm makes crossovering in each part separately after what appends it to a generation. A crossover principle is:
 
 (x_better, y_best), (y_better, y_best), (x_best, y_better), (x_best, y_good)
 
 where (x_best, y_best), (x_better, y_better), (x_good, y_good) are selected individs.
-A mutation can be chosen randomly in any gens (it can be configured in method startGA_with_statistics).
-A zero-generation fill with random float numbers in [-chromosomes_number / 2, chromosomes_number).
+A mutatuin range define a "power" of the mutated genes: mutations_range ~ 1 / generation's number
 
 
 # It is planned:
